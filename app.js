@@ -59,9 +59,9 @@ stime();
 x = setInterval(stime, 200);
 // ===== MUSIC PLAYER (Countdown page) =====
 const PLAYLIST = [
-  { title: "Playlist 1", src: "music/Tet 01.mp3" },
-  { title: "Playlist 2", src: "music/Tet 02.mp3" },
-  { title: "Playlist 3", src: "music/Tet 03.mp3" },
+  { title: "Playlist 1", src: "music/tet01.mp3" },
+  { title: "Playlist 2", src: "music/tet02.mp3" },
+  { title: "Playlist 3", src: "music/tet03.mp3" },
 ];
 let trackIndex = 0;
 let isPlaying = false;
