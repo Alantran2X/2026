@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caramel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600&display=swap');
+
+:root {
+  --base-w: 1536px;
+  --base-h: 695px;
+  --scale: 1;
+  --music-bottom: 50px;
+  /* Điều chỉnh cụm phát nhạc lên & xuống */
+  --ui-down: 40px;
+  /* ĐIều chỉnh tiêu đề + vòng tròn h-p-s lên xuống */
+  --letterbox-blur: 20px;
+  /* độ blur */
+  --letterbox-opacity: 0.85;
+  /* độ “mờ” (0→1) */
+  --letterbox-dim: 0.1;
+  /* phủ tối (0→1) */
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+@font-face {
+  font-family: 'DFVN-Excalifont';
+  src: url('font/DFVN-Excalifont.otf') format('opentype'),
+    url('font/DFVN-Excalifont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+/* ===== Stage kiểu game: cố định base + scale đồng nhất ===== */
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  /* letterbox */
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('image/Background05.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 70%;
+  filter: blur(var(--letterbox-blur));
+  transform: scale(1.1);
+  /* tránh viền bị cắt khi blur */
+  opacity: var(--letterbox-opacity);
+  pointer-events: none;
+  z-index: 0;
+}
+/* Phủ tối nhẹ để */
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, var(--letterbox-dim));
+  pointer-events: none;
+  z-index: 0;
+}
+.stage-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--base-w);
+  height: var(--base-h);
+  transform: translate(-50%, -50%) scale(var(--scale));
+  transform-origin: center center;
+  will-change: transform;
+  z-index: 1;
+  /* Background nằm trong stage để scale đồng nhất */
+  background-image: url('image/Background05.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 70%;
+}
+/* ===== Layout chính (giữ hiệu ứng/chi tiết từ bản Edit) ===== */
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.wrapper h1 {
+  font-size: 55px;
+  font-family: 'DFVN-Excalifont', sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 45px;
+  color: #fff;
+  transform: translateY(var(--ui-down));
+}
+.wrapper .box-time {
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: normal;
+  width: 530px;
+  justify-content: center;
+  gap: 17px;
+  transform: translateY(var(--ui-down)) scale(1.15);
+  transform-origin: center;
+}
+.box-time .time {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(216, 48, 48);
+  border-radius: 50%;
+  box-shadow: 0 0 20px #fff,
+    0 0 40px #fff;
+}
+.box-time .time::before {
+  position: absolute;
+  content: '';
+  width: 100px;
+  height: 100px;
+  border: 11px solid rgb(251, 255, 0);
+  box-shadow: inset 0 0 10px #333;
+  border-radius: 50%;
+}
+.box-time .time p {
+  font-size: 30px;
+  line-height: 1;
+  margin-bottom: -6px;
+  transform: translateY(2px);
+  font-family: 'DFVN-Excalifont', sans-serif;
+  color: #fff;
+}
+.box-time .time span {
+  padding: 10px 0px;
+  font-size: 25px;
+  line-height: 1;
+  transform: translateY(8px);
+  font-family: 'SN Pro', sans-serif;
+  font-weight: 500;
+  color: #d0ff00;
+}
+/* ===== Auto ẩn/hiện box theo mode (đã thêm từ bản Edit, đồng bộ app.js) ===== */
+.mode-hms #daysBox {
+  display: none !important;
+}
+.mode-ms #daysBox,
+.mode-ms #hoursBox {
+  display: none !important;
+}
+.mode-s #daysBox,
+.mode-s #hoursBox,
+.mode-s #minutesBox {
+  display: none !important;
+}
+.mode-s #secondsBox {
+  transform: scale(1.35);
+}
+/* ===== Music bar: đổi fixed -> absolute để scale theo stage ===== */
+.music-bar {
+  position: absolute;
+  left: 50%;
+  bottom: var(--music-bottom);
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  z-index: 9999;
+  user-select: none;
+}
+.music-bar button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.music-bar button:active {
+  transform: translateY(1px);
+}
+.music-title {
+  margin-left: 8px;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'SN Pro', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+}
+.music-progress {
+  width: 420px;
+  height: 6px;
+  accent-color: #ffe100;
+  cursor: pointer;
+}
+.music-bar .time {
+  font-family: 'SN Pro', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  min-width: 44px;
+  text-align: center;
+}
+.index-rabbits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+.index-rabbits .rabbit {
+  position: absolute;
+  height: auto;
+  will-change: left, top, transform;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .25));
+}
+.index-rabbits .rabbit-1 {
+  width: 220px;
+  top: 300px;
+  left: -260px;
+  animation: rabbitRun1 15s linear infinite;
+}
+.index-rabbits .rabbit-2 {
+  width: 190px;
+  top: 10px;
+  left: 1600px;
+  animation: rabbitRun2 15s linear infinite;
+}
+@keyframes rabbitRun1 {
+  0% {
+    left: -260px;
+    transform: scale(1) scaleX(1);
+  }
+
+  49% {
+    left: 1600px;
+    transform: scale(1) scaleX(1);
+  }
+
+  50% {
+    left: 1600px;
+    transform: scale(1) scaleX(-1);
+  }
+
+  100% {
+    left: -260px;
+    transform: scale(1) scaleX(-1);
+  }
+}
+@keyframes rabbitRun2 {
+  0% {
+    left: 1600px;
+    transform: scale(.95) scaleX(-1);
+  }
+
+  49% {
+    left: -260px;
+    transform: scale(.95) scaleX(-1);
+  }
+
+  50% {
+    left: -260px;
+    transform: scale(.95) scaleX(1);
+  }
+
+  100% {
+    left: 1600px;
+    transform: scale(.95) scaleX(1);
+  }
+}

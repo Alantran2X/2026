@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./style.css" />
+  <title>Happy New Year 2026</title>
+</head>
+
+<body>
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="index-rabbits" aria-hidden="true">
+        <img class="rabbit rabbit-1" src="image/HPNY01.gif" alt="HPNY 01">
+        <img class="rabbit rabbit-2" src="image/HPNY02.gif" alt="HPNY 02">
+      </div>
+      <div class="wrapper">
+        <h1>Thời gian chỉ còn...</h1>
+        <!-- Music bar (đã thêm từ bản Edit) -->
+        <div class="music-bar" aria-label="Music controls">
+          <button id="btnPrev" type="button" title="Lùi bài">⏮</button>
+          <button id="btnPlayPause" type="button" title="Phát/Tạm dừng">▶</button>
+          <button id="btnStop" type="button" title="Dừng">⏹</button>
+          <button id="btnNext" type="button" title="Tiếp bài">⏭</button>
+          <span class="music-title" id="musicTitle">—</span>
+          <span class="time" id="curTime">0:00</span>
+          <input id="progress" class="music-progress" type="range" min="0" max="100" value="0" step="0.1"
+            aria-label="Thanh thời lượng nhạc" />
+          <span class="time" id="durTime">0:00</span>
+          <audio id="player" preload="metadata"></audio>
+        </div>
+
+        <!-- Countdown (đã thêm id Box từ bản Edit) -->
+        <div class="box-time">
+          <div class="time" id="daysBox">
+            <p>Ngày</p>
+            <span id="days">day</span>
+          </div>
+          <div class="time" id="hoursBox">
+            <p>Giờ</p>
+            <span id="hours">hours</span>
+          </div>
+          <div class="time" id="minutesBox">
+            <p>Phút</p>
+            <span id="minutes">minute</span>
+          </div>
+          <div class="time" id="secondsBox">
+            <p>Giây</p>
+            <span id="seconds">seconds</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Stage scaling kiểu game (base 1536 x 695) -->
+  <script>
+    (() => {
+      const BASE_W = 1536;
+      const BASE_H = 695;
+      const inner = document.querySelector(".stage-inner");
+      if (!inner) return;
+      function getViewport() {
+        const vv = window.visualViewport;
+        if (vv) {
+          // Luôn tính theo kích thước "thực" (không phụ thuộc zoom)
+          return { vw: vv.width * vv.scale, vh: vv.height * vv.scale };
+        }
+        return { vw: window.innerWidth, vh: window.innerHeight };
+      }
+      function resize() {
+        const { vw, vh } = getViewport();
+        const s = Math.min(vw / BASE_W, vh / BASE_H);
+        inner.style.setProperty("--scale", String(s));
+      }
+      window.addEventListener("resize", resize, { passive: true });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", resize, { passive: true });
+      }
+      resize();
+    })();
+  </script>
+  <script src="./app.js"></script>
+</body>
+</html>
