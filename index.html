@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,7 +7,6 @@
   <link rel="stylesheet" href="./style.css" />
   <title>Happy New Year 2026</title>
 </head>
-
 <body>
   <div class="stage">
     <div class="stage-inner">
@@ -18,7 +16,6 @@
       </div>
       <div class="wrapper">
         <h1>Thời gian chỉ còn...</h1>
-        <!-- Music bar (đã thêm từ bản Edit) -->
         <div class="music-bar" aria-label="Music controls">
           <button id="btnPrev" type="button" title="Lùi bài">⏮</button>
           <button id="btnPlayPause" type="button" title="Phát/Tạm dừng">▶</button>
@@ -31,8 +28,6 @@
           <span class="time" id="durTime">0:00</span>
           <audio id="player" preload="metadata"></audio>
         </div>
-
-        <!-- Countdown (đã thêm id Box từ bản Edit) -->
         <div class="box-time">
           <div class="time" id="daysBox">
             <p>Ngày</p>
@@ -54,7 +49,6 @@
       </div>
     </div>
   </div>
-  <!-- Stage scaling kiểu game (base 1536 x 695) -->
   <script>
     (() => {
       const BASE_W = 1536;
@@ -64,7 +58,6 @@
       function getViewport() {
         const vv = window.visualViewport;
         if (vv) {
-          // Luôn tính theo kích thước "thực" (không phụ thuộc zoom)
           return { vw: vv.width * vv.scale, vh: vv.height * vv.scale };
         }
         return { vw: window.innerWidth, vh: window.innerHeight };
@@ -82,5 +75,8 @@
     })();
   </script>
   <script src="./app.js"></script>
+  <div style="position:fixed;left:8px;bottom:8px;font-size:10px;opacity:.55;z-index:999999">
+    <a href="https://time.now" target="_blank" rel="noopener">Time data by time.now</a>
+  </div>
 </body>
 </html>

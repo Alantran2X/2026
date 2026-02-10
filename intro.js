@@ -1,5 +1,84 @@
+
+(() => {
+    const FUT_MS = new Date("2026-02-17T00:00:00+07:00").getTime();
+    const UNLOCK_KEY = "hny2026_unlocked_v1";
+
+    document.documentElement.style.visibility = "hidden";
+
+    function setVisible() {
+        document.documentElement.style.visibility = "";
+    }
+
+    function markUnlocked() {
+        try { localStorage.setItem(UNLOCK_KEY, "1"); } catch (_) { }
+    }
+
+    function hasUnlockedFlag() {
+        try { return localStorage.getItem(UNLOCK_KEY) === "1"; } catch (_) { return false; }
+    }
+
+    async function fetchJsonWithTimeout(url, timeoutMs) {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+            const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return await res.json();
+        } finally {
+            clearTimeout(t);
+        }
+    }
+
+    async function getNowFromTimeNow() {
+        const data = await fetchJsonWithTimeout(
+            "https://time.now/developer/api/timezone/Asia/Ho_Chi_Minh",
+            2500
+        );
+        const sec = Number(data && data.unixtime);
+        return Number.isFinite(sec) ? sec * 1000 : null;
+    }
+
+    async function gate() {
+        if (hasUnlockedFlag()) {
+            setVisible();
+            return;
+        }
+
+        try {
+            const data = await fetchJsonWithTimeout("/api/now", 2500);
+            const now = Number(data && data.now);
+            const confidence = String((data && data.confidence) || "").toLowerCase();
+
+            if (Number.isFinite(now) && confidence && confidence !== "low") {
+                if (now >= FUT_MS) {
+                    markUnlocked();
+                    setVisible();
+                    return;
+                }
+                window.location.replace("index.html");
+                return;
+            }
+        } catch (_) { }
+
+        try {
+            const now2 = await getNowFromTimeNow();
+            if (Number.isFinite(now2)) {
+                if (now2 >= FUT_MS) {
+                    markUnlocked();
+                    setVisible();
+                    return;
+                }
+                window.location.replace("index.html");
+                return;
+            }
+        } catch (_) { }
+
+        window.location.replace("index.html");
+    }
+
+    gate();
+})();
 document.addEventListener("DOMContentLoaded", () => {
-    // ====== 1) SCALE kiểu game (giữ layout theo base) ======
     const root = document.documentElement;
     const baseW = parseFloat(getComputedStyle(root).getPropertyValue("--base-w")) || 1920;
     const baseH = parseFloat(getComputedStyle(root).getPropertyValue("--base-h")) || 919;
@@ -14,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function getViewport() {
         const vv = window.visualViewport;
         if (vv) {
-            // Tính theo kích thước "thực" (không phụ thuộc zoom)
             return { vw: vv.width * vv.scale, vh: vv.height * vv.scale };
         }
         return { vw: window.innerWidth, vh: window.innerHeight };
@@ -48,9 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateScale();
     requestAnimationFrame(updateLetterbox);
 
-
-    // ====== 2) CLICK "Ấn vào đây nè!" => bật giao diện 2 ======
-    // chọn đúng nút ở slider1 (tránh nhầm nút trong slider3)
     const btn = document.querySelector(".slider1 .box-button .button > button");
     if (btn) {
         btn.addEventListener("click", () => {
@@ -79,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ====== 3) Giao diện 3: chỉ click MAIL mới mở, clover không mở ======
     const mailBtn = document.querySelector(".slider2 .mail button");
     const cloverBtn = document.querySelector(".slider2 .mail .heart");
     const slider3 = document.querySelector(".slider3");
@@ -102,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
         closeX.addEventListener("click", () => slider3.classList.remove("active"));
     }
 
-    // ====== 4) FIREWORKS (stage-based, không làm tối nền, tốc độ chậm hơn) ======
     const canvas = document.getElementById("fireworks");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -132,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rockets.push({
             x, y,
             vx: rand(-0.45, 0.45),
-            vy: rand(-12.5, -10.0),     // CHẬM HƠN
+            vy: rand(-12.5, -10.0),
             targetY,
             color: choice(COLORS),
         });
@@ -163,12 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const dt = Math.min(33, now - last);
         last = now;
 
-        // fade canvas kiểu "xóa dần" => không làm tối nền bên dưới
         ctx.globalCompositeOperation = "destination-out";
         ctx.fillStyle = "rgba(0,0,0,0.18)";
         ctx.fillRect(0, 0, designW, designH);
 
-        // spawn rocket
         spawnAcc += dt;
         const spawnEvery = designW < 1100 ? 1100 : 900;
         if (spawnAcc > spawnEvery) {
@@ -177,13 +248,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (Math.random() < 0.28) spawnRocket();
         }
 
-        // rockets
         ctx.globalCompositeOperation = "source-over";
         for (let i = rockets.length - 1; i >= 0; i--) {
             const r = rockets[i];
             r.x += r.vx;
             r.y += r.vy;
-            r.vy += 0.07; // gravity CHẬM HƠN
+            r.vy += 0.07;
 
             ctx.fillStyle = r.color;
             ctx.beginPath();
@@ -196,7 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // particles (vệt)
         ctx.globalCompositeOperation = "lighter";
         for (let i = particles.length - 1; i >= 0; i--) {
             const p = particles[i];
@@ -223,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         requestAnimationFrame(tick);
     }
-    // ====== CLICK vào đâu nổ pháo ở đó (tọa độ theo base 1920×919) ======
+
     function clickBoom(e) {
         if (!designEl) return;
 
@@ -237,7 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         explode(x, y, choice(COLORS));
     }
-    // pointerdown để hỗ trợ chuột + cảm ứng
     window.addEventListener("pointerdown", clickBoom, { passive: true });
     requestAnimationFrame(tick);
 });

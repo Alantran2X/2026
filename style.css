@@ -2,21 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Caramel&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600&display=swap');
-
 :root {
   --base-w: 1536px;
   --base-h: 695px;
   --scale: 1;
   --music-bottom: 50px;
-  /* Điều chỉnh cụm phát nhạc lên & xuống */
   --ui-down: 40px;
-  /* ĐIều chỉnh tiêu đề + vòng tròn h-p-s lên xuống */
   --letterbox-blur: 20px;
-  /* độ blur */
   --letterbox-opacity: 0.85;
-  /* độ “mờ” (0→1) */
   --letterbox-dim: 0.1;
-  /* phủ tối (0→1) */
 }
 html,
 body {
@@ -37,7 +31,6 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
-/* ===== Stage kiểu game: cố định base + scale đồng nhất ===== */
 .stage {
   position: fixed;
   inset: 0;
@@ -55,12 +48,10 @@ body {
   background-position: center 70%;
   filter: blur(var(--letterbox-blur));
   transform: scale(1.1);
-  /* tránh viền bị cắt khi blur */
   opacity: var(--letterbox-opacity);
   pointer-events: none;
   z-index: 0;
 }
-/* Phủ tối nhẹ để */
 .stage::after {
   content: "";
   position: absolute;
@@ -79,13 +70,11 @@ body {
   transform-origin: center center;
   will-change: transform;
   z-index: 1;
-  /* Background nằm trong stage để scale đồng nhất */
   background-image: url('image/Background05.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center 70%;
 }
-/* ===== Layout chính (giữ hiệu ứng/chi tiết từ bản Edit) ===== */
 .wrapper {
   position: relative;
   width: 100%;
@@ -153,7 +142,6 @@ body {
   font-weight: 500;
   color: #d0ff00;
 }
-/* ===== Auto ẩn/hiện box theo mode (đã thêm từ bản Edit, đồng bộ app.js) ===== */
 .mode-hms #daysBox {
   display: none !important;
 }
@@ -169,7 +157,6 @@ body {
 .mode-s #secondsBox {
   transform: scale(1.35);
 }
-/* ===== Music bar: đổi fixed -> absolute để scale theo stage ===== */
 .music-bar {
   position: absolute;
   left: 50%;

@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="intro.css">
     <title>Happy New Year 2026</title>
 </head>
-
 <body>
     <div class="stage">
         <div class="stage-inner">
@@ -262,7 +261,7 @@
                                         <p id="message-content">
 Happy New Year! Năm mới vui vẻ nhá :-dig, ái chà chà vậy là má đã 28 rồi à, lại già khụ thêm rồi kìa =))) Chúc chị thêm tuổi mới già hơn, xinh hơn, giàu có hơn, luôn khỏe mạnh [ Chạy bộ đê :-dig ]. 
 Chúc cho cả gia đình chị sức khỏe, hạnh phúc, bình an và may mắn.<br>
-Chúc chị năm nay thực hiện những điều mong ước, nhưng ước nguyện, dự định năm cũ chưa đạt được thì năm mới sẽ hoàn thành.<br>
+Chúc chị năm nay thực hiện những điều mong ước, những ước nguyện, dự định năm cũ chưa đạt được thì năm mới sẽ hoàn thành.<br>
 Chúc chị luôn vui vẻ, mạnh khỏe và lúc nào cũng nở nụ cười thật xinh, nhiều niềm vui và luôn bình an. [ Hết văn rồi, được nhiều đó thôi, bao nhiều ý tốt lời hay đi hết rồi đó :-dig ]<br>
 Chúc má trăm điều như ý, vạn sự như mơ, chúc má năm mới công thành danh toại, trẻ mãi không già, tấn tài, tấn lộc, phúc lộc trường tồn [ BHX tài trợ câu nói này =))) ]<br>
 NẾU chưa ngủ thì ngủ đi, hãy có 1 giấc ngủ thật ngon và chúc cho má Vạn sự như ý, Triệu sự như mơ, Trăm sự bất ngờ, Hàng giờ hạnh phúc :-dig [ Học lỏm được đấy =)))) ]🍁🍁🍁<br>
@@ -298,7 +297,6 @@ NẾU chưa ngủ thì ngủ đi, hãy có 1 giấc ngủ thật ngon và chúc 
     const inner = document.querySelector(".stage-inner");
     if (!audio || !inner) return;
 
-    // Tao may nhac nho (khong chan click)
     const hint = document.createElement("div");
     hint.className = "volume-hint";
     hint.innerHTML = `
@@ -363,10 +361,8 @@ NẾU chưa ngủ thì ngủ đi, hãy có 1 giấc ngủ thật ngon và chúc 
 
     <script src="./data.js"></script>
     <script>
-        // get request GET name
         var urlParams = new URLSearchParams(window.location.search);
         var name = urlParams.get('name');
-        // search name in data_name
         if (name != null) {
             for (var i = 0; i < data_name.length; i++) {
                 if (name == data_name[i].name) {
@@ -381,7 +377,3 @@ NẾU chưa ngủ thì ngủ đi, hãy có 1 giấc ngủ thật ngon và chúc 
     <script src="./intro.js"></script>
 </body>
 </html>
-
-
-
-

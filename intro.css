@@ -15,22 +15,13 @@
 }
 
 :root {
-    /* BASE hiển thị chính (laptop) */
     --base-w: 1536px;
     --base-h: 695px;
-
-    /* DESIGN gốc (tọa độ cũ) */
     --design-w: 1920px;
     --design-h: 919px;
-
-    /* scale cố định để map design -> base */
     --fit-x: 0.8;
     --fit-y: 0.756257;
-
-    /* scale kiểu game (tự co theo màn) */
     --scale: 1;
-
-    /* giữ nguyên vì đang dùng theo thiết kế gốc */
     --off-top: -1103px;
 
     --letterbox-blur: 28px;
@@ -76,8 +67,6 @@ body {
     pointer-events: none;
     z-index: 0;
 }
-
-/* đảm bảo nội dung nằm trên lớp blur */
 .stage-inner {
     position: relative;
     z-index: 1;
@@ -86,8 +75,6 @@ body {
     transform: scale(var(--scale));
     transform-origin: center center;
 }
-
-/* wrapper giữ bố cục gốc 1920×919 */
 .design {
     position: absolute;
     left: 0;
@@ -104,17 +91,13 @@ body {
     --lb-bottom: 0px;
     --lb-left: 0px;
 }
-
-/* blur vùng ngoài khung */
 .lb {
     position: absolute;
     pointer-events: none;
     z-index: 2147483647;
-    /* luôn nằm trên mọi object */
     backdrop-filter: blur(var(--letterbox-blur));
     -webkit-backdrop-filter: blur(var(--letterbox-blur));
     background: rgba(0, 0, 0, var(--letterbox-dim));
-    /* phải có nền hơi trong suốt để thấy blur */
 }
 
 .lb-top {
@@ -208,9 +191,7 @@ body {
 .textHappynewyear {
     position: absolute;
     width: 900px;
-    /* bạn đã tăng */
     height: 100px;
-    /* bạn đã tăng */
     display: flex;
     justify-content: space-between;
     top: 20px;
@@ -831,8 +812,6 @@ body {
     transform: rotate(360deg);
     filter: drop-shadow(0px 0px 10px rgba(0, 248, 103, 0.8));
 }
-
-/* FIX cho trường hợp button bị bọc trong <a> (giao diện 3) */
 .box-button .button a {
     text-decoration: none;
     display: inline-block;
@@ -1889,8 +1868,6 @@ body {
 .mail button>i {
     transition: 0.5s;
 }
-
-/* Mặc định: mail màu vàng giống chữ "Ấn vào đây nè!" */
 .mail button i {
     color: #ffe100;
 }
@@ -1936,22 +1913,16 @@ body {
         transform: rotate(0deg);
     }
 }
-
-/* Trạng thái mặc định: mail vàng, clover trắng */
 .mail button i {
     color: #ffe100;
     transition: 0.5s;
 }
-
-/* Hover CHỈ khi rê vào emoji mail */
 .mail button:hover i {
     cursor: pointer;
     color: #fff;
     filter: drop-shadow(0px 0px 10px rgb(255, 187, 199));
     animation: rotateMail 0.5s linear infinite;
 }
-
-/* Khi hover mail → clover đổi màu giống giao diện 1 */
 .mail button:hover+.heart {
     transform: translateY(-4px);
     background-color: rgb(186, 35, 62);
@@ -2346,20 +2317,14 @@ h2 {
 .box-content .right .content p {
     padding: 0px 20px 0 20px;
     margin-top: -25px;
-    /* tăng nhẹ để căn đều đẹp hơn */
     text-align: justify;
-    /* căn đều 2 bên */
     text-justify: inter-word;
-    /* giống Word */
     line-height: 1.5;
-    /* giãn dòng 1.25 */
     font-size: 20px;
     font-family: 'DFVN-Excalifont';
     opacity: 0;
     transition: 1s;
 }
-
-/* ===== hiệu ứng chữ nội dung thư xuất hiện ===== */
 .slider3.active .content p,
 .slider3:hover .content p {
     animation: bodyContent 7s 1s forwards;
@@ -2374,8 +2339,6 @@ h2 {
         opacity: 1;
     }
 }
-
-/* ===== hiệu ứng chữ ký xuất hiện sau nội dung thư ===== */
 .signature.signature--center {
     opacity: 0;
     transform: translateY(-25px);
@@ -2397,9 +2360,6 @@ h2 {
         transform: translateY(0);
     }
 }
-
-/* ----active------ */
-
 .box-flower .flower-img.active {
     animation: activeScale 1s forwards;
     transition: all 1s;
@@ -2773,9 +2733,6 @@ h2 {
     top: 64%;
     z-index: 10000;
 }
-
-/* ===== NÚT GIAO DIỆN 3 ===== */
-/* NÚT LÌ XÌ – XUẤT HIỆN SAU NỘI DUNG THƯ */
 .slider3 .box-button--in-letter {
     position: absolute;
     left: 50%;
@@ -2786,8 +2743,6 @@ h2 {
     animation: none;
     z-index: 10001;
 }
-
-/* Tăng kích thước cụm nút "Lì xì nè!" giao diện 3 lên 1.5x */
 .slider3 .box-button--in-letter .button {
     width: 255px;
     height: 75px;
@@ -2813,7 +2768,6 @@ h2 {
 .slider3.active .box-button--in-letter {
     animation: showLuckyButton 2s ease forwards;
     animation-delay: 4s;
-    /* chỉnh thời gian ở đây */
 }
 
 @keyframes showLuckyButton {
@@ -2836,10 +2790,6 @@ h2 {
     z-index: 5;
     pointer-events: none;
 }
-
-/* ===== FLOWER: cố định theo F12 + giữ quay (override) ===== */
-
-/* 1) Tắt scale/opacity/animation của cả cụm box-flower (để tọa độ F12 đúng) */
 .box-flower {
     position: absolute !important;
     top: 0 !important;
@@ -2854,33 +2804,24 @@ h2 {
 
     z-index: 999 !important;
     display: block !important;
-    /* phòng media query có display:none */
     pointer-events: none !important;
 }
-
-/* 2) Base size: giảm để không “to đùng” (đây là mấu chốt) */
 .box-flower .flower-img {
     position: absolute !important;
     right: auto !important;
     pointer-events: none !important;
 
     --base: 65px;
-    /* <= nếu vẫn to, giảm 30px; nếu nhỏ, tăng 50px */
     width: var(--base) !important;
 
     --s: 1;
-    /* scale theo F12 sẽ set bên dưới */
     transform-origin: center;
 }
-
-/* img fill theo base */
 .box-flower .flower-img img {
     width: 100% !important;
     height: auto !important;
     display: block !important;
 }
-
-/* 3) Quay + scale cùng lúc (không bị transform ghi đè) */
 @keyframes flowerSpin {
     from {
         transform: rotate(0deg) scale(var(--s));
@@ -2900,8 +2841,6 @@ h2 {
         transform: rotate(0deg) scale(var(--s));
     }
 }
-
-/* 4) Tọa độ + scale lấy từ F12 (gắn vào wrapper) */
 .box-flower .flower-img:nth-child(1) {
     top: 702px !important;
     left: 1111px !important;
@@ -2948,8 +2887,6 @@ h2 {
     z-index: 6;
     animation: flowerSpin 3s linear infinite !important;
 }
-
-/* Khi chuyển qua giao diện 2: hoa phải biến mất (đè animation xoay) */
 .box-flower .flower-img.active {
     animation: flowerOut 1s ease forwards !important;
     pointer-events: none !important;
@@ -2966,17 +2903,12 @@ h2 {
         transform: scale(0);
     }
 }
-
-/* HPNY chạy qua lại và luôn "thuận hướng" như index */
 .slider-img6 img:nth-child(6) {
     width: 220px;
-    /* chỉnh kích thước */
     position: absolute;
     z-index: 12;
     margin-top: 40px;
-    /* chỉnh cao-thấp */
     margin-left: -320px;
-    /* ngoài màn hình bên trái */
     animation: hpnyRun1 18s linear 2s infinite;
 }
 
@@ -3008,7 +2940,6 @@ h2 {
     z-index: 12;
     margin-top: 625px;
     margin-left: calc(var(--design-w) + 320px);
-    /* ngoài màn hình bên phải */
     animation: hpnyRun2 18s linear 2s infinite;
 }
 
@@ -3094,8 +3025,6 @@ h2 {
         transform: translateX(0) translateY(0);
     }
 }
-
-/* ====== Volume hint cloud ====== */
 .volume-hint {
     position: absolute;
     inset: 0;
