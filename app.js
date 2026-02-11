@@ -181,6 +181,8 @@ const PLAYLIST = [
   { title: "Playlist 2", src: "music/tet02.mp3" },
   { title: "Playlist 3", src: "music/tet03.mp3" },
 ];
+const EFFECT_FRAME_COUNT = 20;
+const EFFECT_LOOP_MS = 2650;
 let trackIndex = 0;
 let isPlaying = false;
 
@@ -302,4 +304,155 @@ function initMusicPlayer() {
   if (PLAYLIST.length) loadTrack(0);
 }
 
-window.addEventListener("DOMContentLoaded", initMusicPlayer);
+function initAmazingEffectFallback() {
+  const canvas = document.getElementById("effectCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d", { desynchronized: true });
+  if (!ctx) return;
+  ctx.imageSmoothingEnabled = true;
+  if (typeof ctx.imageSmoothingQuality === "string") {
+    ctx.imageSmoothingQuality = "medium";
+  }
+
+  const frameUrls = Array.from(
+    { length: EFFECT_FRAME_COUNT },
+    (_, i) => `Effect/amazingfeature/image/a${i}.png`
+  );
+  const MASK_THRESHOLD_LOW = 0.14;
+  const MASK_THRESHOLD_HIGH = 0.74;
+  const MASK_LUMA_LOW = 0.1;
+  const MASK_LUMA_HIGH = 0.58;
+  const EFFECT_INTENSITY = 1;
+  const EXTRA_PASS_ALPHA = 0.56;
+  const EXTRA_PASS_SCALE = 1;
+  const FRAME_BLEND_WINDOW = 0.18;
+
+  const cw = canvas.width;
+  const ch = canvas.height;
+
+  function clamp01(v) {
+    if (v < 0) return 0;
+    if (v > 1) return 1;
+    return v;
+  }
+
+  function smoothstep(edge0, edge1, x) {
+    const t = clamp01((x - edge0) / (edge1 - edge0));
+    return t * t * (3 - 2 * t);
+  }
+
+  function loadImage(src) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+  }
+
+  function buildMaskedFrame(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return null;
+    const off = document.createElement("canvas");
+    off.width = img.naturalWidth;
+    off.height = img.naturalHeight;
+    const offCtx = off.getContext("2d", { willReadFrequently: true });
+    if (!offCtx) return null;
+
+    offCtx.drawImage(img, 0, 0);
+    const id = offCtx.getImageData(0, 0, off.width, off.height);
+    const d = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i] / 255;
+      const g = d[i + 1] / 255;
+      const b = d[i + 2] / 255;
+      const mx = Math.max(r, g, b);
+      const mn = Math.min(r, g, b);
+      const sat = mx > 0 ? (mx - mn) / mx : 0;
+      const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+      const brightAlpha = smoothstep(MASK_THRESHOLD_LOW, MASK_THRESHOLD_HIGH, mx);
+      const lumaAlpha = smoothstep(MASK_LUMA_LOW, MASK_LUMA_HIGH, luma);
+      const satFactor = smoothstep(0.03, 0.45, sat);
+      const sparkBoost = smoothstep(0.72, 1, mx) * 0.5;
+
+      let a = brightAlpha * (0.72 + 0.28 * satFactor);
+      a = Math.max(a, lumaAlpha * 0.72);
+      a = clamp01(a * 1.04 + sparkBoost);
+      d[i + 3] = Math.round(255 * a);
+    }
+
+    offCtx.putImageData(id, 0, 0);
+    return off;
+  }
+
+  function createFittedCanvas(source, scaleMult) {
+    if (!source) return null;
+    const sw = source.width || source.naturalWidth;
+    const sh = source.height || source.naturalHeight;
+    if (!sw || !sh) return null;
+
+    const out = document.createElement("canvas");
+    out.width = cw;
+    out.height = ch;
+    const outCtx = out.getContext("2d");
+    if (!outCtx) return null;
+    outCtx.imageSmoothingEnabled = true;
+    if (typeof outCtx.imageSmoothingQuality === "string") {
+      outCtx.imageSmoothingQuality = "medium";
+    }
+
+    const scale = Math.max(cw / sw, ch / sh) * scaleMult;
+    const dw = sw * scale;
+    const dh = sh * scale;
+    const dx = (cw - dw) * 0.5;
+    const dy = (ch - dh) * 0.5;
+    outCtx.drawImage(source, dx, dy, dw, dh);
+    return out;
+  }
+
+  function drawPrepared(source, alpha) {
+    if (!source || alpha <= 0) return;
+    ctx.globalAlpha = alpha * EFFECT_INTENSITY;
+    ctx.drawImage(source, 0, 0);
+  }
+
+  Promise.all(frameUrls.map((src) => loadImage(src))).then((images) => {
+    const frames = images.map((img) => buildMaskedFrame(img));
+    if (!frames.some(Boolean)) return;
+    const baseFrames = frames.map((frame) => createFittedCanvas(frame, 1));
+    const extraFrames = frames.map((frame) => createFittedCanvas(frame, EXTRA_PASS_SCALE));
+
+    const startTs = performance.now();
+
+    function tick(now) {
+      const t = ((now - startTs) % EFFECT_LOOP_MS) / EFFECT_LOOP_MS;
+      const f = t * baseFrames.length;
+      const i0 = Math.floor(f) % baseFrames.length;
+      const i1 = (i0 + 1) % baseFrames.length;
+      const x = f - Math.floor(f);
+      let a0 = 1;
+      let a1 = 0;
+      if (x > 1 - FRAME_BLEND_WINDOW) {
+        const m = (x - (1 - FRAME_BLEND_WINDOW)) / FRAME_BLEND_WINDOW;
+        a0 = 1 - m;
+        a1 = m;
+      }
+
+      ctx.clearRect(0, 0, cw, ch);
+      drawPrepared(baseFrames[i0], a0);
+      drawPrepared(baseFrames[i1], a1);
+      drawPrepared(extraFrames[i0], a0 * EXTRA_PASS_ALPHA);
+      drawPrepared(extraFrames[i1], a1 * EXTRA_PASS_ALPHA);
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  initMusicPlayer();
+  initAmazingEffectFallback();
+});

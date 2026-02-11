@@ -83,6 +83,35 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 60;
+}
+.effect-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+.effect-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+  opacity: 0.95;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(255, 255, 255, 0.94) 55%,
+    rgba(255, 255, 255, 0.74) 78%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(255, 255, 255, 0.94) 55%,
+    rgba(255, 255, 255, 0.74) 78%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
 }
 .wrapper h1 {
   font-size: 55px;
