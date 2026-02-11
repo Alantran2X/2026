@@ -241,7 +241,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 50;
+  z-index: 70;
 }
 .index-rabbits .rabbit {
   position: absolute;
