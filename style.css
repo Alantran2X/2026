@@ -214,6 +214,77 @@ body {
 .music-bar button:active {
   transform: translateY(1px);
 }
+.audio-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+}
+.audio-kind .audio-kind-btn {
+  width: auto;
+  min-width: 74px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 12px;
+  font-family: 'SN Pro', sans-serif;
+}
+.audio-kind .audio-kind-btn.is-active {
+  color: #ffe100;
+  border-color: rgba(255, 225, 0, 0.85);
+  background: rgba(255, 225, 0, 0.2);
+}
+.audio-kind .audio-kind-btn:active {
+  transform: none;
+}
+.speed-control {
+  position: relative;
+}
+.speed-control .speed-btn {
+  width: auto;
+  min-width: 96px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-family: 'SN Pro', sans-serif;
+}
+.speed-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 96px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+.speed-menu[hidden] {
+  display: none;
+}
+.speed-menu .speed-option {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 12px;
+  font-family: 'SN Pro', sans-serif;
+}
+.speed-menu .speed-option.is-active {
+  color: #ffe100;
+  border-color: rgba(255, 225, 0, 0.85);
+  background: rgba(255, 225, 0, 0.2);
+}
 .music-title {
   margin-left: 8px;
   max-width: 320px;

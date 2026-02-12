@@ -176,14 +176,42 @@ stime();
 x = setInterval(stime, 200);
 
 
-const PLAYLIST = [
-  { title: "Playlist 1", src: "music/tet01.mp3" },
-  { title: "Playlist 2", src: "music/tet02.mp3" },
-  { title: "Playlist 3", src: "music/tet03.mp3" },
-];
+const AUDIO_LIBRARY = {
+  music: [
+    { title: "Playlist 1", src: "music/tet01.mp3" },
+    { title: "Playlist 2", src: "music/tet02.mp3" },
+    { title: "Playlist 3", src: "music/tet03.mp3" },
+  ],
+  podcast: [
+    { title: "Podcast 1", src: "music/HSK7-9CHẤT LƯỢNG GIẤC NGỦ睡眠质量 - PODCAST CHINESE.mp3" },
+    { title: "Podcast 2", src: "music/HSK7-9CHỈ CẦN DŨNG CẢM MỘT CHÚT, CHÚNG TA SẼ LÀM ĐƯỢC只要勇敢一点咱就能行- PODCAST CHINESE.mp3" },
+    { title: "Podcast 3", src: "music/HSK7-9CON NHÀ NGƯỜI TA别人家的孩子- PODCAST CHINESE.mp3" },
+    { title: "Podcast 4", src: "music/HSK7-9CUỘC SỐNG THƯỜNG NHẬT LẠI KHIẾN TÔI NGỘ RA ĐIỀU GÌ-日常生活让我又悟出了点啥- AN KHẢ HY - TIẾNG TRUNG.mp3" },
+    { title: "Podcast 5", src: "music/HSK7-9ĐÚNG NGƯỜI SAI THỜI ĐIỂM-错的时间对的人谈一谈爱情的时机- AN KHẢ HY - PODCAST TIẾNG TRUNG.mp3" },
+    { title: "Podcast 6", src: "music/HSK7-9ĐỪNG NÓI BẢN THÂN KHÔNG XỨNG ĐÁNG NỮA 别再说自己不配了- PODCAST CHINESE.mp3" },
+    { title: "Podcast 7", src: "music/HSK7-9GIẢ SỬ SUỐT CUỘC ĐỜI NÀY BẠN CHỈ CÓ THỂ... BẠN SẼ CHỌN GÌ-假如这辈子只能 … 你会怎么选-PODCAST CHINESE.mp3" },
+    { title: "Podcast 8", src: "music/HSK7-9HỌC CÁCH TỰ QUAN TÂM CHĂM SÓC BẢN THÂN 学会自我关怀- PODCAST CHINESE.mp3" },
+    { title: "Podcast 9", src: "music/HSK7-9KHI BẠN MẤT NGỦ, ĐẾM CỪU KHÔNG CÓ TÁC DỤNG GÌ冷知识失眠的时候数羊是么有用的- PODCAST CHINESE.mp3" },
+    { title: "Podcast 10", src: "music/HSK7-9KHI NHẮC ĐẾN 'NGƯỜI BẠN THÂN NHẤT', BẠN SẼ NGHĨ ĐẾN AI-说起最好的朋友你会想起谁- PODCAST CHINESE.mp3" },
+    { title: "Podcast 11", src: "music/HSK7-9KHÔNG GHÉT ĐI LÀM, KHÔNG SỢ ĐI HỌC  LÀM SAO ĐỂ CÓ THỂ-不讨厌上班不害怕上学怎么做到- AN KHẢ HY.mp3" },
+    { title: "Podcast 12", src: "music/HSK7-9KO NGỪNG LÀM MỚI BẢN THÂN, CUỘC ĐỜI SẼ MÃI CÓ CÂU CHUYỆN ĐỂ KỂ保持自我更新人生就永远有新故事可讲-AN KHẢ HY.mp3" },
+    { title: "Podcast 13", src: "music/HSK7-9LÀM THẾ NÀO ĐỂ BẢN THÂN NGỪNG SUY NGHĨ QUÁ NHIỀU 如何让自己不要想太多- PODCAST CHINESE.mp3" },
+    { title: "Podcast 14", src: "music/HSK7-9LƯU DIỆC PHI - -CÂU CHUYỆN HOA HỒNG-刘亦菲 -玫瑰的故事- AN KHẢ HY - NGHE TIẾNG TRUNG THỤ ĐỘNG.mp3" },
+    { title: "Podcast 15", src: "music/HSK7-9NẾU KHÔNG THỬ, THÌ BẠN SẼ KHÔNG BIẾT CUỘC SỐNG TUYỆT VỜI ĐẾN THẾ NÀO!不去试试你永远不知道生活如此哇塞!.m4a" },
+    { title: "Podcast 16", src: "music/HSK7-9NHÌN LẠI MỘT NĂM- DÙ BÌNH DỊ NHƯNG VÔ CÙNG HÀI LÒNG回顾一年平凡却非常满意-CHINESE PODCAST -AN KHẢ HY.mp3" },
+    { title: "Podcast 17", src: "music/HSK7-9TẠI SAO ĐÔI KHI CHÚNG TA CẢM THẤY CĂNG THẲNG VÀ LO LẮNG我们有时候为什么会感到紧张- PODCAST CHINESE.mp3" },
+    { title: "Podcast 18", src: "music/HSK7-9TǍNG PÍNG LÀ GÌ- CUỘC SỐNG KHÔNG LÀM VIỆC SẼ NHƯ THẾ NÀO什么是躺平不工作的生活会怎么样 PODCAST CHINESE.mp3" },
+    { title: "Podcast 19", src: "music/HSK7-9THẾ NÀO LÀ TÔN TRỌNG- ...什么是尊重尊重在所有关系中处于什么位置- AN KHẢ HY - PODCAST TIẾNG TRUNG.mp3" },
+    { title: "Podcast 20", src: "music/HSK7-9TÌM VIỆC, CÁCH VIẾT CV ...找工作简历怎么写... 幽默) - PODCAST CHINESE.mp3" },
+    { title: "Podcast 21", src: "music/HSK7-9TÔI MUỐN NUÔI DƯỠNG LẠI BẢN THÂN我想重新养育自己- CHINESE PODCAST -AN KHẢ HY - LUYỆN NGHE THỤ ĐỘNG.mp3" },
+    { title: "Podcast 22", src: "music/HSK7-9TỪ NGƯỜI YÊU ĐẾN VỢ CHỒNG, PHẢI VƯỢT QUA BAO NHIÊU THỬ THÁCH-从恋人到夫妻要过多少坎儿PODCAST CHINESE.mp3" },
+    { title: "Podcast 23", src: "music/HSK7-9VỀ NHÀ ĂN TẾT, CHÚNG TA THÍCH ĐIỀU GÌ- SỢ ĐIỀU GÌ-回家过年我们爱什么怕什么- AN KHẢ HY.mp3" },
+  ],
+};
 const EFFECT_FRAME_COUNT = 20;
 const EFFECT_LOOP_MS = 2650;
-let trackIndex = 0;
+let activeKind = "music";
+const trackIndexByKind = { music: 0, podcast: 0 };
 let isPlaying = false;
 
 function initMusicPlayer() {
@@ -193,9 +221,17 @@ function initMusicPlayer() {
   const btnStop = document.getElementById("btnStop");
   const btnNext = document.getElementById("btnNext");
   const btnPrev = document.getElementById("btnPrev");
+  const btnTypeMusic = document.getElementById("btnTypeMusic");
+  const btnTypePodcast = document.getElementById("btnTypePodcast");
   const progress = document.getElementById("progress");
   const curTimeEl = document.getElementById("curTime");
   const durTimeEl = document.getElementById("durTime");
+  const speedControl = document.querySelector(".speed-control");
+  const btnSpeed = document.getElementById("btnSpeed");
+  const speedMenu = document.getElementById("speedMenu");
+  const speedOptions = Array.from(document.querySelectorAll(".speed-option"));
+
+  if (!audio || !titleEl || !btnPlayPause || !btnStop || !btnNext || !btnPrev) return;
 
   function fmtTime(sec) {
     if (!Number.isFinite(sec) || sec < 0) return "00:00:00";
@@ -207,6 +243,20 @@ function initMusicPlayer() {
       String(m).padStart(2, "0") + ":" +
       String(s).padStart(2, "0")
     );
+  }
+
+  function getActiveList() {
+    const list = AUDIO_LIBRARY[activeKind];
+    return Array.isArray(list) ? list : [];
+  }
+
+  function updateKindButtons() {
+    if (btnTypeMusic) btnTypeMusic.classList.toggle("is-active", activeKind === "music");
+    if (btnTypePodcast) btnTypePodcast.classList.toggle("is-active", activeKind === "podcast");
+  }
+
+  function emptyLabelByKind(kind) {
+    return kind === "podcast" ? "No podcast tracks" : "No music tracks";
   }
 
   let isSeeking = false;
@@ -241,15 +291,76 @@ function initMusicPlayer() {
     });
   }
 
-  if (!audio || !btnPlayPause || !btnStop || !btnNext || !btnPrev) return;
+  function formatRate(rate) {
+    return Number(rate).toFixed(2).replace(/\.?0+$/, "");
+  }
+
+  function closeSpeedMenu() {
+    if (!speedMenu || !btnSpeed) return;
+    speedMenu.hidden = true;
+    btnSpeed.setAttribute("aria-expanded", "false");
+  }
+
+  let currentPlaybackRate = 1;
+  function setPlaybackRate(rate) {
+    if (!Number.isFinite(rate) || rate <= 0) return;
+    currentPlaybackRate = rate;
+    audio.playbackRate = rate;
+    if (btnSpeed) btnSpeed.textContent = `Speed ${formatRate(rate)}x`;
+    speedOptions.forEach((opt) => {
+      const optRate = Number(opt.dataset.rate);
+      const active = Number.isFinite(optRate) && Math.abs(optRate - rate) < 0.001;
+      opt.classList.toggle("is-active", active);
+    });
+  }
+
+  setPlaybackRate(1);
+
+  if (btnSpeed && speedMenu && speedControl && speedOptions.length) {
+    btnSpeed.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = speedMenu.hidden;
+      speedMenu.hidden = !speedMenu.hidden;
+      btnSpeed.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    speedOptions.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        const rate = Number(opt.dataset.rate);
+        setPlaybackRate(rate);
+        closeSpeedMenu();
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!speedControl.contains(e.target)) closeSpeedMenu();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSpeedMenu();
+    });
+  }
 
   function loadTrack(i) {
-    trackIndex = (i + PLAYLIST.length) % PLAYLIST.length;
-    audio.src = PLAYLIST[trackIndex].src;
-    titleEl.textContent = PLAYLIST[trackIndex].title || PLAYLIST[trackIndex].src;
+    const list = getActiveList();
+    if (!list.length) {
+      audio.removeAttribute("src");
+      audio.load();
+      titleEl.textContent = emptyLabelByKind(activeKind);
+      if (progress) progress.value = 0;
+      if (curTimeEl) curTimeEl.textContent = "0:00";
+      if (durTimeEl) durTimeEl.textContent = "0:00";
+      return false;
+    }
+    const idx = (i + list.length) % list.length;
+    trackIndexByKind[activeKind] = idx;
+    audio.src = list[idx].src;
+    audio.playbackRate = currentPlaybackRate;
+    titleEl.textContent = list[idx].title || list[idx].src;
     if (progress) progress.value = 0;
     if (curTimeEl) curTimeEl.textContent = "0:00";
     if (durTimeEl) durTimeEl.textContent = "0:00";
+    return true;
   }
 
   async function play() {
@@ -271,24 +382,39 @@ function initMusicPlayer() {
 
   function stop() {
     audio.pause();
-    audio.currentTime = 0;
+    try { audio.currentTime = 0; } catch (_) {}
     isPlaying = false;
     btnPlayPause.textContent = "▶";
   }
 
   function next() {
-    loadTrack(trackIndex + 1);
+    const list = getActiveList();
+    if (!list.length) return;
+    loadTrack((trackIndexByKind[activeKind] || 0) + 1);
     if (isPlaying) play();
   }
 
   function prev() {
-    loadTrack(trackIndex - 1);
+    const list = getActiveList();
+    if (!list.length) return;
+    loadTrack((trackIndexByKind[activeKind] || 0) - 1);
     if (isPlaying) play();
   }
 
+  function switchKind(kind) {
+    if (!AUDIO_LIBRARY[kind] || kind === activeKind) return;
+    const shouldResume = isPlaying && !audio.paused;
+    activeKind = kind;
+    updateKindButtons();
+    const loaded = loadTrack(trackIndexByKind[activeKind] || 0);
+    if (loaded && shouldResume) play();
+    if (!loaded) stop();
+  }
+
   btnPlayPause.addEventListener("click", () => {
-    if (!PLAYLIST.length) return;
-    if (!audio.src) loadTrack(trackIndex);
+    const list = getActiveList();
+    if (!list.length) return;
+    if (!audio.src) loadTrack(trackIndexByKind[activeKind] || 0);
     if (audio.paused) play();
     else pause();
   });
@@ -296,12 +422,15 @@ function initMusicPlayer() {
   btnStop.addEventListener("click", () => stop());
   btnNext.addEventListener("click", () => next());
   btnPrev.addEventListener("click", () => prev());
+  if (btnTypeMusic) btnTypeMusic.addEventListener("click", () => switchKind("music"));
+  if (btnTypePodcast) btnTypePodcast.addEventListener("click", () => switchKind("podcast"));
 
   audio.addEventListener("ended", () => {
     next();
   });
 
-  if (PLAYLIST.length) loadTrack(0);
+  updateKindButtons();
+  loadTrack(trackIndexByKind[activeKind] || 0);
 }
 
 function initAmazingEffectFallback() {
